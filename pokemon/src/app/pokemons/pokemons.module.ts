@@ -28,6 +28,6 @@ const routes: Routes = [
     PokemonCardModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ListComponent, DetailsComponent]
+  declarations: [ListComponent, DetailsComponent],
 })
 export class PokemonsModule {}

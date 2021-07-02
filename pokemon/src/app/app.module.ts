@@ -39,7 +39,7 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(routes, { enableTracing: true })
+    RouterModule.forRoot(routes, { enableTracing: true }),
   ],
   providers: [AuthService],
   declarations: [AppComponent, NavbarComponent],

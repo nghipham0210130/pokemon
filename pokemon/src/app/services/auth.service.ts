@@ -5,8 +5,6 @@ import { User } from '../models/user';
 export class AuthService {
   isLoggedIn: Boolean = false;
   user!: User;
-  countLikes!: number;
-  countDislikes!: number;
 
   constructor() {}
 
@@ -25,20 +23,21 @@ export class AuthService {
     // Create temp user to get data from model
     const tempUser = {
      name: model.name,
-     likes: this.countLikes || 0,
-     dislikes: this.countDislikes || 0,
+     likes: 0,
+     dislikes: 0,
     };
     // Set data for user
     this.user = tempUser;
     // Set status login for user in localStorage
     localStorage.setItem('loginStatus', '1');
     // Set data for user in localStorage
-    localStorage.setItem('User', JSON.stringify(this.user));
     // Check status loggin of User follow data from localStorage
     this.checkLoginStatus();
+    localStorage.setItem('User', JSON.stringify(this.user));
     return true;
   }
 
+  // Check status login
   checkLoginStatus() {
     var loginCookie = localStorage.getItem('loginStatus');
     if (loginCookie == "1") {
@@ -46,6 +45,24 @@ export class AuthService {
     }
     else if( loginCookie == null ) {
       this.isLoggedIn = false;
+    }
+  }
+
+  // Count likes
+  countLikes() {
+    if (this.user) {
+      this.user.likes++;
+      localStorage.setItem('User', JSON.stringify(this.user));
+      console.log(localStorage.getItem('User'));
+    }
+  }
+
+  // Count Dislikes
+  countDislikes() {
+    if (this.user) {
+      this.user.dislikes++;
+      localStorage.setItem('User', JSON.stringify(this.user));
+      console.log(localStorage.getItem('User'));
     }
   }
 }

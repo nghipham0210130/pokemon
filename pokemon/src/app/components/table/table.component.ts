@@ -12,7 +12,7 @@ import { Pokemon } from '../../models/pokemon';
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let result of data">
+        <tr *ngFor="let result of data | searchFilter: searchValue">
           <td>
             <a [routerLink]="['/pokemons', result.id]">{{ result.name }}</a>
           </td>
@@ -72,4 +72,5 @@ import { Pokemon } from '../../models/pokemon';
 export class TableComponent {
   @Input() isLoading = false;
   @Input() data: Pokemon[] = [];
+  @Input() searchValue: string = "";
 }

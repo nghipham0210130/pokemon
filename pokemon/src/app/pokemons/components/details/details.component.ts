@@ -1,5 +1,10 @@
-import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SimplifiedPokemon } from 'src/app/models/pokemon';
+import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
+import { BackendService } from 'src/app/services/backend.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'pokemon-details',
@@ -25,8 +30,12 @@ import { SimplifiedPokemon } from 'src/app/models/pokemon';
         Dislike
       </button>
     </div>
+
+    <div>
+      <button [routerLink]="['/pokemons']">Go to Pokemon List</button>
+    </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       :host {
@@ -35,24 +44,79 @@ import { SimplifiedPokemon } from 'src/app/models/pokemon';
     `
   ]
 })
-export class DetailsComponent {
+export class DetailsComponent implements OnInit{
+  [x: string]: any;
   @HostBinding('class') hostClass =
     'flex flex-col gap-4 items-center justify-center';
   pokemon!: SimplifiedPokemon;
+  routeSub!: number;
+  currentUser!: User;
+  idPokemon!: string;
+  maxIdPokemon!: string;
 
+  constructor(
+    private beService: BackendService,
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private location: Location) {}
+
+    ngOnInit() {
+      this.currentUser = this.authService.user;
+      this.route.params.subscribe((params: Params) =>
+      {
+        this.idPokemon = params['id'];
+      });
+      this.beService.getPokemonDetail(this.idPokemon).subscribe(pokemon => this.pokemon = pokemon);
+      // Get value for numberPokemon
+      this.beService.getPokemonList().subscribe(pokemons => {this.maxIdPokemon = String(pokemons.count)});
+    }
+
+  // go to next id
   nextId() {
-    // go to next id
+    if ( this.idPokemon == null || this.idPokemon == undefined ) {
+      console.log("This Pokemon is not available");
+    }
+    else if ( this.idPokemon == String(this.maxIdPokemon)) {
+      console.log("This Pokemon in the last index");
+    }
+    else {
+      this.idPokemon = String(Number(this.idPokemon) + 1);
+      this.gotoPokemon(this.idPokemon);
+    }
   }
 
+  // go to prev id
   prevId() {
-    // go to prev id
+    if ( this.idPokemon == null || this.idPokemon == undefined ) {
+      console.log("This Pokemon is not available");
+    }
+    else if ( this.idPokemon == '1') {
+      console.log("This Pokemon in the first index");
+    }
+    else {
+      this.idPokemon = String(Number(this.idPokemon) - 1);
+      this.gotoPokemon(this.idPokemon);
+
+    }
+  }
+
+  // Go to Pokemon with input = id
+  gotoPokemon(id: string) {
+    return this.beService.getPokemonDetail(id).subscribe(pokemon => {
+      this.pokemon = pokemon;
+      this.location.replaceState('pokemons/' + id);
+    });
   }
 
   like() {
     // like
+    this.authService.countLikes();
+    console.log(localStorage.getItem('User'));
   }
 
   dislike() {
     // dislike
+    this.authService.countDislikes();
+    console.log(localStorage.getItem('User'));
   }
 }

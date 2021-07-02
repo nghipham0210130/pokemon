@@ -7,8 +7,10 @@ import { PaginatedPokemon, PokemonDetail, SimplifiedPokemon } from '../models/po
 @Injectable({ providedIn: 'root' })
 export class BackendService {
   private readonly baseUrl = 'https://pokeapi.co/api/v2/pokemon';
+  numberPokemon!: number;
 
   constructor(private readonly httpClient: HttpClient) {}
+
 
   getPokemons(limit = 20, offset = 0): Observable<PaginatedPokemon> {
     return this.httpClient
@@ -26,20 +28,20 @@ export class BackendService {
                 .split('/')
                 .filter(Boolean)
                 .pop()
-            }))
+            })),
           };
         })
       );
   }
 
-  // getPokemonDetail(id: string): Observable<SimplifiedPokemon> {
-  //   return this.httpClient
-  //     .get<SimplifiedPokemon>(`${this.baseUrl}/${id}`)
-  //     .pipe(
-  //       delay(1500),
-  //       map((pokemon: PokemonDetail) => BackendService.getSimplifiedPokemon(pokemon))
-  //     );
-  // }
+  getPokemonDetail(id: string): Observable<SimplifiedPokemon> {
+    return this.httpClient
+      .get<PokemonDetail>(`${this.baseUrl}/${id}`)
+      .pipe(
+        // map((pokemon: PokemonDetail) => BackendService.getSimplifiedPokemon(pokemon))
+        map((pokemon: PokemonDetail) => BackendService.getSimplifiedPokemon(pokemon))
+      );
+  }
 
   private static getSimplifiedPokemon(pokemon: PokemonDetail | null): SimplifiedPokemon {
     return {
@@ -50,5 +52,11 @@ export class BackendService {
       stats: pokemon?.stats || [],
       type: pokemon?.types[0].type?.name || '',
     }
+  }
+
+  // Get Pokemon List no limit
+  getPokemonList(): Observable<PaginatedPokemon> {
+    return this.httpClient
+      .get<PaginatedPokemon>(this.baseUrl)
   }
 }

@@ -71,8 +71,9 @@ import { Router } from '@angular/router';
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class NavbarComponent implements OnInit{
   version = VERSION.full;
   currentUser!: User;
@@ -101,11 +102,7 @@ export class NavbarComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // Set current user when user is logging ( Keep data user when reload browser )
-    let user = localStorage.getItem('User');
-    if(user != null) {
-      this.currentUser = JSON.parse(user);
-    }
+    this.currentUser = this.authService.user;
   }
 
   // Logout
