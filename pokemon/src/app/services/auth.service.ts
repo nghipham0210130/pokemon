@@ -1,4 +1,3 @@
-// by Lisa
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 
@@ -8,7 +7,6 @@ export class AuthService {
   user!: User;
   countLikes!: number;
   countDislikes!: number;
-
 
   constructor() {}
 

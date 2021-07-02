@@ -113,6 +113,7 @@ export class NavbarComponent implements OnInit{
     // Reset localStorage when logout
     localStorage.removeItem('loginStatus');
     localStorage.removeItem('User');
+    this.route.navigate(['/not-auth']);
   }
 
   // Required value when submit

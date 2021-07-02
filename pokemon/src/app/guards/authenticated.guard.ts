@@ -30,16 +30,7 @@ export class AuthenticatedGuard
   }
 
   private isAuth$() {
-    if(this.authService.isLoggedIn) {
-      return of(true).pipe(
-        tap(isAuth => {
-          if (!isAuth) {
-            this.router.navigate(['/not-auth']);
-          }
-        })
-      );
-    }
-    else {
+    if(!this.loggedIn()) {
       return of(false).pipe(
         tap(isAuth => {
           if (!isAuth) {
@@ -48,5 +39,11 @@ export class AuthenticatedGuard
         })
       );
     }
+    return true;
+  }
+
+  loggedIn() {
+    const loginCookie = localStorage.getItem('loginStatus');
+    return !!loginCookie;
   }
 }
