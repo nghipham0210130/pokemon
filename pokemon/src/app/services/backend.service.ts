@@ -32,14 +32,14 @@ export class BackendService {
       );
   }
 
-  getPokemonDetail(id: string): Observable<SimplifiedPokemon> {
-    return this.httpClient
-      .get<SimplifiedPokemon>(`${this.baseUrl}/${id}`)
-      .pipe(
-        delay(1500), 
-        map((pokemon: PokemonDetail) => BackendService.getSimplifiedPokemon(pokemon))
-      );
-  }
+  // getPokemonDetail(id: string): Observable<SimplifiedPokemon> {
+  //   return this.httpClient
+  //     .get<SimplifiedPokemon>(`${this.baseUrl}/${id}`)
+  //     .pipe(
+  //       delay(1500),
+  //       map((pokemon: PokemonDetail) => BackendService.getSimplifiedPokemon(pokemon))
+  //     );
+  // }
 
   private static getSimplifiedPokemon(pokemon: PokemonDetail | null): SimplifiedPokemon {
     return {
