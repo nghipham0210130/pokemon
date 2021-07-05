@@ -32,7 +32,7 @@ import { Location } from '@angular/common';
     </div>
 
     <div>
-      <button [routerLink]="['/pokemons']">Go to Pokemon List</button>
+      <button class="btn__backto" [routerLink]="['/pokemons']">Back to Pokemon List</button>
     </div>
   `,
   // changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,6 +41,16 @@ import { Location } from '@angular/common';
       :host {
         height: calc(100% - 5rem);
       }
+
+      .btn__backto {
+        font-weight: bold;
+        font-size: 1rem;
+        color: rgb(45, 45, 45);
+        &:hover {
+          color: rgb(125, 125,125);
+        }
+      }
+
     `
   ]
 })
