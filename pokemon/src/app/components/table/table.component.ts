@@ -70,7 +70,13 @@ import { Pokemon } from '../../models/pokemon';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableComponent {
-  @Input() isLoading = false;
+  @Input() isLoading!: boolean;
   @Input() data: Pokemon[] = [];
   @Input() searchValue: string = "";
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1500);
+  }
 }

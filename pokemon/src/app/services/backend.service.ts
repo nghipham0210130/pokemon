@@ -38,7 +38,6 @@ export class BackendService {
     return this.httpClient
       .get<PokemonDetail>(`${this.baseUrl}/${id}`)
       .pipe(
-        // map((pokemon: PokemonDetail) => BackendService.getSimplifiedPokemon(pokemon))
         map((pokemon: PokemonDetail) => BackendService.getSimplifiedPokemon(pokemon))
       );
   }

@@ -19,7 +19,7 @@ import type { PaginatorState } from '../../../components/paginator/paginator.com
     placeholder="Filter by pokemon name..."
     [formControl]="query"
   />
-    <data-table [isLoading]="false" [data]="data" [searchValue]="query.value"></data-table>
+    <data-table [isLoading]="isLoading" [data]="data" [searchValue]="query.value"></data-table>
   `,
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -31,6 +31,7 @@ export class ListComponent {
   limit = 20;
   offset = 0;
   totalRecords = 0;
+  isLoading = true;
 
   constructor(private beService: BackendService) {}
 
